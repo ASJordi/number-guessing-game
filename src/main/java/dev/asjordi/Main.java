@@ -1,5 +1,7 @@
 package dev.asjordi;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -24,6 +26,8 @@ public class Main {
         System.out.println("Great! You have selected the " + (level == 1 ? "Easy" : level == 2 ? "Medium" : "Hard") + " difficulty level.");
         System.out.println("Let's start the game!\n");
         
+        var startTime = Instant.now();
+        
         while (attempts > 0) {
         	System.out.println("Enter your guess:");
         	String input = sc.nextLine();
@@ -43,6 +47,11 @@ public class Main {
         		System.out.println("You lost! The secret number was " + secretNumber);
         	}
 		}
+        
+        var endTime = Instant.now();
+        long duration = Duration.between(startTime, endTime).getSeconds();
+        System.out.println("Total time " + duration + " seconds");
+        
 	}
 	
 	private int getLevel() {

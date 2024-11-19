@@ -1,6 +1,7 @@
 package dev.asjordi;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -18,7 +19,11 @@ public class Main {
     		game.play();
     		games.add(new GameRecord(game.getId(), game.getLevel(), game.getCurrentAttempts(), game.getDuration(), game.getSecretNumber()));
     		end = playAgain();
-    	}
+    	}    	
+		
+		System.out.println("User’s high score by level and attempts");
+		games.sort(Comparator.comparingInt(GameRecord::level).thenComparing(GameRecord::attempts));
+    	games.forEach(System.out::println);
     }
 	
 	private static boolean playAgain() {

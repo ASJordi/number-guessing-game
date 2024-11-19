@@ -13,10 +13,10 @@ Simple number guessing game where the computer selects a random number and the u
 
 ## Features :sparkles:
 
-- Multiple rounds
-- Timer
-- Scoreboard
-- User hints
+- Play multiple rounds
+- Timed games
+- Show custom final score
+- Show hints to user
 
 ## Technologies :gear:
 

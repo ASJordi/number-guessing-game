@@ -1,95 +1,44 @@
 package dev.asjordi;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
-    
-	private final Scanner sc = new Scanner(System.in);
-	private final Random r = new Random();
+	
+	private final static Scanner sc = new Scanner(System.in);
+	private final static List<GameRecord> games = new ArrayList<>();
 	
 	public static void main(String[] args) {
-		Main m = new Main();
-    	m.play();
+		boolean end = true;
+    	
+    	while (end) {
+    		var game = new Game();
+    		game.play();
+    		games.add(new GameRecord(game.getId(), game.getLevel(), game.getCurrentAttempts(), game.getDuration(), game.getSecretNumber()));
+    		end = playAgain();
+    	}
     }
 	
-	public void play() {
-		int currentAttempts = 0;
-        int secretNumber = generateNumber();
-        
-        welcome();
-        
-        int level = getLevel();
-        int attempts = level == 1 ? 10 : level == 2 ? 5 : 3; 
-        System.out.println("Great! You have selected the " + (level == 1 ? "Easy" : level == 2 ? "Medium" : "Hard") + " difficulty level.");
-        System.out.println("Let's start the game!\n");
-        
-        var startTime = Instant.now();
-        
-        while (attempts > 0) {
-        	System.out.println("Enter your guess:");
-        	String input = sc.nextLine();
-        	input = cleanString(input);
-        	int userNumber = Integer.parseInt(input);
-        	currentAttempts++;
-        	
-        	if (userNumber == secretNumber) {
-				System.out.println("Congratulations! You guessed the correct number in " + currentAttempts +" attempts.");
-				break;
-			} else {
-				System.out.println("The secret number is " + (userNumber > secretNumber ? "less" : "greater") + " than " + userNumber);
-				attempts--;
-			}
-        	
-        	if (attempts == 0) {
-        		System.out.println("You lost! The secret number was " + secretNumber);
-        	}
-		}
-        
-        var endTime = Instant.now();
-        long duration = Duration.between(startTime, endTime).getSeconds();
-        System.out.println("Total time " + duration + " seconds");
-        
-	}
-	
-	private int getLevel() {
-		boolean valid = false;
-		int level = -1;
-		String validLevels = "123";
+	private static boolean playAgain() {
+		String validOptions = "12";
+		String input = "";
 		
-		while (!valid) {
-			System.out.println("Please select the difficulty level:");
-	        System.out.println("1. Easy (10 chances)");
-	        System.out.println("2. Medium (5 chances)");
-	        System.out.println("3. Hard (3 chances)");
-	        System.out.println("Enter your choice: ");
+		while(true) {
+			System.out.println("Please select an option:");
+			System.out.println("1. Play again");
+			System.out.println("2. Exit and Show score");
+			
+			input = sc.nextLine();
+	        input = Utils.cleanString(input);
 	        
-	        String input = sc.nextLine();
-	        input = cleanString(input);
-	        
-	        if (!validLevels.contains(input)) continue;
-	        
-	        level = Integer.parseInt(input);
-			valid = true;
-		}
-		
-		return level;
+	        if (validOptions.contains(input)) break;
+		}		
+
+		return input.equalsIgnoreCase("1") ? true : false;
 	}
 	
-	private int generateNumber() {
-		return this.r.nextInt(1, 101);
-	}
-	
-	
-	private void welcome() {
-		System.out.println("Welcome to the Number Guessing Game!");
-        System.out.println("I'm thinking of a number between 1 and 100.");
-        System.out.println("You have N chances to guess the correct number.\n");
-	}
-	
-	private String cleanString(String str) {
-		return str.replace(" ", "").trim();
-	}
+	static record GameRecord(UUID id, int level, int attempts, long duration, int secretNumber) {}
+
 }

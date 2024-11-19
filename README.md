@@ -11,6 +11,13 @@ Simple number guessing game where the computer selects a random number and the u
 <img src="src/main/resources/app01.png" alt="Number Guessing Game" width="400"/> <br>
 <img src="src/main/resources/app02.png" alt="Number Guessing Game" width="400"/>
 
+## Features :sparkles:
+
+- Multiple rounds
+- Timer
+- Scoreboard
+- User hints
+
 ## Technologies :gear:
 
 - Java 21
